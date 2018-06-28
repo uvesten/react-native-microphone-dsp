@@ -46,11 +46,13 @@ RCT_EXPORT_METHOD(start) {
     AudioQueueStart(_queue, NULL);
 }
 
+RCT_EXPORT_METHOD(pause) {
+    AudioQueuePause(_queue);
+    AudioQueueFlush(_queue);
+}
+
 RCT_EXPORT_METHOD(stop) {
     AudioQueueStop(_queue, YES);
-    AVAudioSession *session = [AVAudioSession sharedInstance];
-    NSError *setCategoryError = nil;
-    [session setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
 }
 
 - (void)processInputBuffer:(AudioQueueBufferRef)inBuffer queue:(AudioQueueRef)queue {

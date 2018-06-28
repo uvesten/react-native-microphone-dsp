@@ -40,7 +40,7 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
             return;
         }
 
-        if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+        if (audioRecord != null && audioRecord.getState() != AudioRecord.STATE_UNINITIALIZED) {
             audioRecord.stop();
             audioRecord.release();
         }
@@ -95,7 +95,7 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void start() {
-        if (!running && audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED && recordingThread != null) {
+        if (!running && audioRecord != null && audioRecord.getState() != AudioRecord.STATE_UNINITIALIZED && recordingThread != null) {
             running = true;
             audioRecord.startRecording();
             recordingThread.start();
@@ -103,8 +103,16 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void pause() {
+        if (audioRecord != null && audioRecord.getState() == AudioRecord.RECORDSTATE_RECORDING) {
+            running = false;
+            audioRecord.stop();
+        }
+    }
+
+    @ReactMethod
     public void stop() {
-        if (audioRecord != null && audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+        if (audioRecord != null && audioRecord.getState() != AudioRecord.STATE_UNINITIALIZED) {
             running = false;
             audioRecord.stop();
             audioRecord.release();

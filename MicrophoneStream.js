@@ -7,6 +7,7 @@ export default {
   // TODO: params check
   init: options => MicrophoneStream.init(options),
   start: () => MicrophoneStream.start(),
+  pause: () => MicrophoneStream.pause(),
   stop: () => MicrophoneStream.stop(),
   addListener: listener => emitter.addListener('audioData', listener),
 };
