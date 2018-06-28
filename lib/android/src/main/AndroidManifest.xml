@@ -1,5 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cn.qiuxiang.react.recording">
-
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-</manifest>

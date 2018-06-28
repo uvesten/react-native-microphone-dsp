@@ -4,6 +4,4 @@ node_modules/
 build/
 xcuserdata/
 project.xcworkspace/
-
-*.iml
-local.properties
+.DS_Store

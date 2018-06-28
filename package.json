@@ -1,45 +1,45 @@
 {
-  "name": "react-native-recording",
-  "version": "0.4.1",
-  "description": "React Native audio recording module used for DSP",
-  "author": "Qiu Xiang <i@7c00.cc>",
+  "name": "react-native-microphone-stream",
+  "version": "0.0.1",
+  "description": "React Native module used for two-way audio",
+  "author": "Chad Smith <chad@developer.email> (https://github.com/chadsmith)",
   "license": "MIT",
+  "contributors": [
+    {
+      "name": "Qiu Xiang",
+      "email": "i@7c00.cc"
+    }
+  ],
   "keywords": [
     "react-native",
     "audio-recording",
-    "recording"
+    "recording",
+    "microphone"
   ],
+  "homepage": "https://github.com/chadsmith/react-native-microphone-stream",
   "repository": {
     "type": "git",
-    "url": "https://github.com/qiuxiang/react-native-recording"
+    "url": "git@github.com:chadsmith/react-native-microphone-stream.git"
   },
   "files": [
-    "lib/index.js",
-    "lib/android/src",
-    "lib/android/build.gradle",
-    "lib/ios"
+    "MicrophoneStream.js",
+    "android/src",
+    "android/build.gradle",
+    "ios"
   ],
-  "main": "lib",
-  "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "run-android": "node node_modules/react-native/local-cli/cli.js run-android",
-    "log-android": "node node_modules/react-native/local-cli/cli.js log-android",
-    "run-ios": "node node_modules/react-native/local-cli/cli.js run-ios"
-  },
+  "main": "MicrophoneStream.js",
   "peerDependencies": {
     "react-native": ">=0.47"
   },
   "devDependencies": {
-    "babel-preset-react-native": "^4.0.0",
-    "react": "16.2.0",
-    "react-native": "0.53.0"
+    "eslint": "1.10.3",
+    "babel-eslint": "5.0.0-beta8",
+    "eslint-plugin-react": "3.16.1",
+    "eslint-config-airbnb": "4.0.0"
   },
-  "presets": [
-    "react-native"
-  ],
   "rnpm": {
     "android": {
-      "sourceDir": "lib/android"
+      "sourceDir": "android"
     }
   }
 }
