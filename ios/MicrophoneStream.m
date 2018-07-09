@@ -43,6 +43,8 @@ RCT_EXPORT_METHOD(start) {
     AVAudioSession *session = [AVAudioSession sharedInstance];
     NSError *setCategoryError = nil;
     [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
+    NSError *setModeError = nil;
+    [session setMode:AVAudioSessionModeVoiceChat error:&setModeError];
     AudioQueueStart(_queue, NULL);
 }
 
