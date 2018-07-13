@@ -3,8 +3,6 @@
 @implementation MicrophoneStream {
     AudioQueueRef _queue;
     AudioQueueBufferRef _buffer;
-    NSNumber *_audioData[65536];
-    UInt32 _bufferSize;
 }
 
 void inputCallback(
@@ -21,7 +19,6 @@ RCT_EXPORT_MODULE()
 
 RCT_EXPORT_METHOD(init:(NSDictionary *) options) {
     UInt32 bufferSize = options[@"bufferSize"] == nil ? 8192 : [options[@"bufferSize"] unsignedIntegerValue];
-    _bufferSize = bufferSize;
 
     AudioStreamBasicDescription description;
     description.mReserved = 0;
@@ -32,7 +29,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *) options) {
     description.mBytesPerFrame = options[@"bytesPerFrame"] == nil ? 2 : [options[@"bytesPerFrame"] unsignedIntegerValue];
     description.mBytesPerPacket = options[@"bytesPerPacket"] == nil ? 2 : [options[@"bytesPerPacket"] unsignedIntegerValue];
     description.mFormatID = kAudioFormatULaw;
-    description.mFormatFlags = kAudioFormatFlagIsSignedInteger;
+    description.mFormatFlags = 0;
 
     AudioQueueNewInput(&description, inputCallback, (__bridge void *) self, NULL, NULL, 0, &_queue);
     AudioQueueAllocateBuffer(_queue, (UInt32) (bufferSize * 2), &_buffer);
@@ -41,10 +38,10 @@ RCT_EXPORT_METHOD(init:(NSDictionary *) options) {
 
 RCT_EXPORT_METHOD(start) {
     AVAudioSession *session = [AVAudioSession sharedInstance];
-    NSError *setCategoryError = nil;
-    [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&setCategoryError];
-    NSError *setModeError = nil;
-    [session setMode:AVAudioSessionModeVoiceChat error:&setModeError];
+    [session setCategory:AVAudioSessionCategoryPlayAndRecord
+                   error:nil];
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker
+                               error:nil];
     AudioQueueStart(_queue, NULL);
 }
 
@@ -54,16 +51,24 @@ RCT_EXPORT_METHOD(pause) {
 }
 
 RCT_EXPORT_METHOD(stop) {
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayback
+                   error:nil];
     AudioQueueStop(_queue, YES);
 }
 
 - (void)processInputBuffer:(AudioQueueBufferRef)inBuffer queue:(AudioQueueRef)queue {
-    SInt16 *audioData = inBuffer->mAudioData;
-    UInt32 count = inBuffer->mAudioDataByteSize / sizeof(SInt16);
-    for (int i = 0; i < _bufferSize; i++) {
-        _audioData[i] = @(audioData[i]);
-    }
-    [self sendEventWithName:@"audioData" body:[NSArray arrayWithObjects:_audioData count:count]];
+    NSData* audioData = [NSData dataWithBytes:inBuffer->mAudioData
+                                       length:inBuffer->mAudioDataByteSize];
+
+    const unsigned char *dataBuffer = (const unsigned char *)[audioData bytes];
+    NSUInteger dataLength  = [audioData length];
+    NSMutableArray *array  = [NSMutableArray arrayWithCapacity:dataLength];
+
+    for (int i = 0; i < dataLength; ++i)
+     [array addObject:[NSNumber numberWithInteger:dataBuffer[i]]];
+
+    [self sendEventWithName:@"audioData" body:array];
     AudioQueueEnqueueBuffer(queue, inBuffer, 0, NULL);
 }
 
