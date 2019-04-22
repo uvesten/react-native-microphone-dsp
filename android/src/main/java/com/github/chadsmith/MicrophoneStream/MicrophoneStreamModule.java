@@ -53,23 +53,23 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
             sampleRateInHz = options.getInt("sampleRate");
         }
 
-        int channelConfig = AudioFormat#CHANNEL_IN_MONO;
+        int channelConfig = AudioFormat.CHANNEL_IN_MONO;
         if (options.hasKey("channelsPerFrame")) {
             int channelsPerFrame = options.getInt("channelsPerFrame");
 
             // every other case --> CHANNEL_IN_MONO
             if (channelsPerFrame == 2) {
-                channelConfig = AudioFormat#CHANNEL_IN_STEREO;
+                channelConfig = AudioFormat.CHANNEL_IN_STEREO;
             }
         }
 
         // we support only 8-bit and 16-bit PCM
-        int audioFormat = AudioFormat#ENCODING_PCM_16BIT;
+        int audioFormat = AudioFormat.ENCODING_PCM_16BIT;
         if (options.hasKey("bitsPerChannel")) {
             int bitsPerChannel = options.getInt("bitsPerChannel");
 
             if (bitsPerChannel == 8) {
-                audioFormat = AudioFormat#ENCODING_PCM_8BIT;
+                audioFormat = AudioFormat.ENCODING_PCM_8BIT;
             }
         }
 
