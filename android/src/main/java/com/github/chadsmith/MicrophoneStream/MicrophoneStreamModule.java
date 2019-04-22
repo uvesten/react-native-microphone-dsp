@@ -125,7 +125,7 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
             WritableArray data = Arguments.createArray();
             audioRecord.read(buffer, 0, bufferSize);
             for (float value : buffer) {
-                data.pushFloat(value);
+                data.pushInt((int)value);
             }
             eventEmitter.emit("audioData", data);
         }

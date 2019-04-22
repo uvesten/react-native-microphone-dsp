@@ -18,10 +18,10 @@
     "recording",
     "microphone"
   ],
-  "homepage": "https://github.com/chadsmith/react-native-microphone-stream",
+  "homepage": "https://github.com/chadsmith/react-native-microphone-dsp",
   "repository": {
     "type": "git",
-    "url": "git@github.com:chadsmith/react-native-microphone-stream.git"
+    "url": "git@github.com:chadsmith/react-native-microphone-dsp.git"
   },
   "files": [
     "MicrophoneStream.js",

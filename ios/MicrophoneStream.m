@@ -29,7 +29,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *) options) {
     description.mBytesPerFrame = options[@"bytesPerFrame"] == nil ? 1 : [options[@"bytesPerFrame"] unsignedIntegerValue];
     description.mBytesPerPacket = options[@"bytesPerPacket"] == nil ? 1 : [options[@"bytesPerPacket"] unsignedIntegerValue];
     description.mFormatID = kAudioFormatLinearPCM;
-    description.mFormatFlags = kAudioFormatFlagIsFloat;
+    description.mFormatFlags = kAudioFormatFlagIsSignedInteger;
 
     AudioQueueNewInput(&description, inputCallback, (__bridge void *) self, NULL, NULL, 0, &_queue);
     AudioQueueAllocateBuffer(_queue, (UInt32) (bufferSize * 2), &_buffer);
