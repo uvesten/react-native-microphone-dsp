@@ -26,10 +26,10 @@ RCT_EXPORT_METHOD(init:(NSDictionary *) options) {
     description.mBitsPerChannel = options[@"bitsPerChannel"] == nil ? 16 : [options[@"bitsPerChannel"] unsignedIntegerValue];
     description.mChannelsPerFrame = options[@"channelsPerFrame"] == nil ? 1 : [options[@"channelsPerFrame"] unsignedIntegerValue];
     description.mFramesPerPacket = options[@"framesPerPacket"] == nil ? 1 : [options[@"framesPerPacket"] unsignedIntegerValue];
-    description.mBytesPerFrame = options[@"bytesPerFrame"] == nil ? 2 : [options[@"bytesPerFrame"] unsignedIntegerValue];
-    description.mBytesPerPacket = options[@"bytesPerPacket"] == nil ? 2 : [options[@"bytesPerPacket"] unsignedIntegerValue];
-    description.mFormatID = kAudioFormatULaw;
-    description.mFormatFlags = 0;
+    description.mBytesPerFrame = options[@"bytesPerFrame"] == nil ? 1 : [options[@"bytesPerFrame"] unsignedIntegerValue];
+    description.mBytesPerPacket = options[@"bytesPerPacket"] == nil ? 1 : [options[@"bytesPerPacket"] unsignedIntegerValue];
+    description.mFormatID = kAudioFormatLinearPCM;
+    description.mFormatFlags = kAudioFormatFlagIsFloat;
 
     AudioQueueNewInput(&description, inputCallback, (__bridge void *) self, NULL, NULL, 0, &_queue);
     AudioQueueAllocateBuffer(_queue, (UInt32) (bufferSize * 2), &_buffer);

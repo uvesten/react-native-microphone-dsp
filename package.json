@@ -1,11 +1,13 @@
 {
-  "name": "react-native-microphone-stream",
+  "name": "react-native-microphone-dsp",
   "version": "0.0.1",
-  "description": "React Native module used for two-way audio",
-  "author": "Chad Smith <chad@developer.email> (https://github.com/chadsmith)",
+  "description": "React Native module used for DSP",
+  "author": "Petter Uvesten",
   "license": "MIT",
   "contributors": [
     {
+  "name": "Chad Smith <chad@developer.email> (https://github.com/chadsmith)",
+  "license": "MIT",
       "name": "Qiu Xiang",
       "email": "i@7c00.cc"
     }

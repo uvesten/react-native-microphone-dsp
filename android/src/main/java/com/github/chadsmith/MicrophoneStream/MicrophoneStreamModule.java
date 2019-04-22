@@ -79,12 +79,8 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
             this.bufferSize = 8192;
         }
 
-        audioRecord = new AudioRecord(
-                MediaRecorder.AudioSource.VOICE_COMMUNICATION,
-                sampleRateInHz,
-                channelConfig,
-                audioFormat,
-                this.bufferSize * 2);
+        audioRecord = new AudioRecord(MediaRecorder.AudioSource.VOICE_COMMUNICATION, sampleRateInHz, channelConfig,
+                audioFormat, this.bufferSize * 2);
 
         recordingThread = new Thread(new Runnable() {
             public void run() {
@@ -95,7 +91,8 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void start() {
-        if (!running && audioRecord != null && audioRecord.getState() != AudioRecord.STATE_UNINITIALIZED && recordingThread != null) {
+        if (!running && audioRecord != null && audioRecord.getState() != AudioRecord.STATE_UNINITIALIZED
+                && recordingThread != null) {
             running = true;
             audioRecord.startRecording();
             recordingThread.start();
@@ -123,14 +120,12 @@ class MicrophoneStreamModule extends ReactContextBaseJavaModule {
     private void recording() {
         short buffer[] = new short[bufferSize];
         byte encoded[] = new byte[bufferSize];
-        G711UCodec codec = new G711UCodec();
 
         while (running && !reactContext.getCatalystInstance().isDestroyed()) {
             WritableArray data = Arguments.createArray();
             audioRecord.read(buffer, 0, bufferSize);
-            codec.encode(buffer, bufferSize, encoded, 0);
-            for (byte value : encoded) {
-                data.pushInt((int) value);
+            for (float value : buffer) {
+                data.pushFloat(value);
             }
             eventEmitter.emit("audioData", data);
         }
